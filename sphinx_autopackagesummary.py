@@ -63,21 +63,25 @@ def find_autosummary_in_lines(lines, module=None, filename=None):
 
             new_lines.append(base_indent + '.. autosummary::')
 
-            line = lines.pop(0)
-            while not line.strip() or line.startswith(base_indent + " "):
-                new_lines.append(line)
-                if not lines:
-                    break
+            # Pass on any options.
+            while lines:
                 line = lines.pop(0)
 
-            new_lines.append("")
+                if line.strip() and not line.startswith(base_indent + " "):
+                    # Deindented line, so end of the autosummary block.
+                    break
+
+                new_lines.append(line)
+
+            if new_lines[-1].strip():
+                new_lines.append("")
 
             for subname in get_package_modules(name):
                 new_lines.append(base_indent + "   " + subname)
 
             new_lines.append("")
-        else:
-            new_lines.append(line)
+
+        new_lines.append(line)
 
     return orig_find_autosummary_in_lines(new_lines, module, filename)
 
