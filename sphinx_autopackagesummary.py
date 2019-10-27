@@ -1,4 +1,4 @@
-__version__ = '1.0'
+__version__ = '1.1'
 
 from sphinx.util import logging
 from sphinx.ext.autosummary import Autosummary, _import_by_name
