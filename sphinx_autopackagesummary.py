@@ -1,4 +1,4 @@
-__version__ = '1.1'
+__version__ = '1.2'
 
 from sphinx.util import logging
 from sphinx.ext.autosummary import Autosummary, _import_by_name
@@ -19,8 +19,20 @@ def get_package_modules(pkgname):
         return []
 
     spec = importlib.util.find_spec(pkgname)
+    if not spec:
+        logger.warning("Failed to find module {0}".format(pkgname))
+        return []
+
     path = spec.submodule_search_locations
     pkg = None
+
+    if not path:
+        # This is not a package, but a module.
+        # (Fun fact: if we don't return here, we will start importing all the
+        # modules on sys.path, which will have all sorts of hilarious effects
+        # like reading out the Zen of Python and opening xkcd #353 in the web
+        # browser.)
+        return []
 
     names = []
     for importer, modname, ispkg in pkgutil.iter_modules(path):
