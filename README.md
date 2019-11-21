@@ -38,7 +38,7 @@ pip install sphinx-autopackagesummary
 ```
 2. Enable it in `conf.py`.
 ```python
-extensions = ['sphinx.ext.autosummary', 'autopackagesummary']
+extensions = ['sphinx.ext.autosummary', 'sphinx_autopackagesummary']
 ```
 3. Make use of the new syntax
 
