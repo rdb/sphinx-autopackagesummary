@@ -39,6 +39,8 @@ pip install sphinx-autopackagesummary
 2. Enable it in `conf.py`.
 ```python
 extensions = ['sphinx.ext.autosummary', 'sphinx_autopackagesummary']
+
+autosummary_generate = True
 ```
 3. Make use of the new syntax
 
@@ -77,6 +79,8 @@ And then create a `_templates/autosummary/package.rst` like so:
    .. autopackagesummary:: {{ fullname }}
       :toctree: .
 ```
+
+Alternatively, you can override the default `module.rst` template.
 
 Note the use of `.` for the toctree setting: otherwise, the `_autosummary`
 directories would keep nesting, like `_autosummary/_autosummary/module.rst`.
