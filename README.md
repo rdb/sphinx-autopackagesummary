@@ -78,6 +78,7 @@ And then create a `_templates/autosummary/package.rst` like so:
 
    .. autopackagesummary:: {{ fullname }}
       :toctree: .
+      :template: autosummary/package.rst
 ```
 
 Alternatively, you can override the default `module.rst` template.
