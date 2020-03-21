@@ -1,10 +1,10 @@
 __version__ = '1.2'
 
 from sphinx.util import logging
-from sphinx.ext.autosummary import Autosummary, _import_by_name
+from sphinx.ext.autosummary import Autosummary
 from sphinx.ext.autodoc.importer import import_module
 import sphinx.ext.autosummary.generate as generate
-import importlib
+import importlib.util
 import pkgutil
 import re
 
@@ -25,7 +25,6 @@ def get_package_modules(pkgname):
         return []
 
     path = spec.submodule_search_locations
-    pkg = None
 
     if not path:
         # This is not a package, but a module.
@@ -44,13 +43,10 @@ def get_package_modules(pkgname):
         # Try importing the module; if we can't, then don't add it to the list.
         try:
             import_module(fullname)
-        except Exception as ex:
-            logger.warning("Failed to import {0}: {1}".format(fullname, ex))
+        except ImportError:
+            logger.exception("Failed to import {0}".format(fullname))
             continue
 
-        #if pkg is None:
-        #    pkg = _import_by_name(pkgname)[0]
-        #setattr(pkg, modname, mod)
         names.append(fullname)
 
     return names
@@ -65,7 +61,6 @@ def find_autosummary_in_lines(lines, module=None, filename=None):
 
     lines = list(lines)
     new_lines = []
-    in_autopackagesummary = False
 
     while lines:
         line = lines.pop(0)
